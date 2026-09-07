@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Showcase Vault — Geometry Dash level file archive</title>
-<meta name="description" content="Download .gdr, .gdr2 and .gmd level files from showcase creators. Auto-generated previews, no accounts, no bloat.">
+<title>GD Levels Archive — Geometry Dash level file archive</title>
+<meta name="description" content="Browse Geometry Dash levels by ID, download .gdr, .gdr2 and .gmd files, and see full details: song, verifier, rating, stars, tags and more.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
@@ -18,20 +18,19 @@
 </head>
 <body>
 
+<div class="scanline-fx" aria-hidden="true"></div>
+
 <nav class="topbar">
   <div class="topbar-inner">
     <button class="brand" id="brand-home-btn" type="button">
       <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 20L12 4L20 20L12 15L4 20Z" fill="#fff"/></svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 20L12 4L20 20L12 15L4 20Z" fill="#04070d"/></svg>
       </div>
-      Showcase Vault
+      <span class="brand-text">GD Levels<span class="brand-accent">Archive</span></span>
     </button>
-    <div class="nav-links nav-mobile-hide">
-      <button class="nav-tab active" id="tab-browse" data-route="browse">Browse</button>
-      <button class="nav-tab" id="tab-changelog" data-route="changelog">Changelog</button>
-    </div>
+    <div class="nav-links nav-mobile-hide" id="nav-links"></div>
     <button class="nav-cta" id="request-showcase-nav-btn" type="button">
-      Request a showcase
+      Submit a level
     </button>
   </div>
 </nav>
@@ -43,17 +42,18 @@
 
     <section class="hero">
       <div class="hero-texture grid-texture"></div>
-      <div class="hero-glow"></div>
+      <div class="hero-glow hero-glow-a"></div>
+      <div class="hero-glow hero-glow-b"></div>
 
-      <span class="eyebrow"><span class="eyebrow-dot"></span>.gdr · .gdr2 · .gmd</span>
-      <h1>Level files, straight<br>from the <span class="accent-word">showcase</span>.</h1>
-      <p class="sub">Download raw Geometry Dash level files from showcase creators. Auto‑generated preview GIFs, real object counts, zero accounts.</p>
+      <span class="eyebrow"><span class="eyebrow-dot"></span>.gdr · .gdr2 · .gmd · searchable by Level ID</span>
+      <h1>Every level.<br>Every <span class="accent-word">ID</span>. One archive.</h1>
+      <p class="sub">Look up Geometry Dash levels by ID or name, read the full breakdown — song, verifier, rating, stars, tags — and download the raw level file straight from the source.</p>
       <div class="hero-actions">
         <a href="#browse" class="btn btn-primary" id="hero-browse-link">
-          Browse the vault
+          Browse the archive
         </a>
         <button class="btn btn-ghost" id="request-showcase-hero-btn">
-          Request a Level Showcase
+          Submit a level
         </button>
       </div>
 
@@ -69,7 +69,28 @@
       <div class="filter-bar">
         <div class="search-box">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="text" id="search-input" placeholder="Search level or creator name…">
+          <input type="text" id="search-input" placeholder="Search by level name, creator, or ID…">
+        </div>
+        <div class="filter-selects">
+          <select id="diff-select" class="filter-select" aria-label="Filter by difficulty">
+            <option value="all">All difficulties</option>
+            <option value="Easy">Easy</option>
+            <option value="Normal">Normal</option>
+            <option value="Hard">Hard</option>
+            <option value="Harder">Harder</option>
+            <option value="Insane">Insane</option>
+            <option value="Easy Demon">Easy Demon</option>
+            <option value="Medium Demon">Medium Demon</option>
+            <option value="Hard Demon">Hard Demon</option>
+            <option value="Insane Demon">Insane Demon</option>
+            <option value="Extreme Demon">Extreme Demon</option>
+          </select>
+          <select id="sort-select" class="filter-select" aria-label="Sort levels">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="downloads">Most downloaded</option>
+            <option value="name">Name A–Z</option>
+          </select>
         </div>
         <div class="chip-row" id="chip-row">
           <button class="chip active" data-filter="all">All</button>
@@ -85,9 +106,9 @@
     <section class="upload-section">
       <div class="curation-grid">
         <div class="upload-copy">
-          <span class="eyebrow"><span class="eyebrow-dot"></span>how the vault is built</span>
+          <span class="eyebrow"><span class="eyebrow-dot"></span>how the archive is built</span>
           <h2>Every file here was added by hand — there's no public upload.</h2>
-          <p>This isn't an open dropbox. Levels are hand-picked and added directly to the site's source by the maintainer, so every download is something a real person vetted first.</p>
+          <p>This isn't an open dropbox. Levels are hand-picked and added directly to the site's source by the maintainer, so every download is something a real person vetted first — ID, difficulty, and rating included.</p>
           <ul>
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -95,15 +116,15 @@
             </li>
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              Preview GIF and object count are generated when a file is added
+              Preview GIF, object count, and Level ID shown on every entry
             </li>
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              Want your level here? Send a showcase request below
+              Want your level here? Send a submission below
             </li>
           </ul>
           <button class="btn btn-primary" id="request-showcase-section-btn">
-            Request a Level Showcase
+            Submit a level
           </button>
         </div>
       </div>
@@ -117,9 +138,50 @@
       <div class="changelog-header">
         <span class="eyebrow"><span class="eyebrow-dot"></span>site history</span>
         <h1>Changelog</h1>
-        <p>Everything added, fixed, or changed on Showcase Vault.</p>
+        <p>Everything added, fixed, or changed on GD Levels Archive.</p>
       </div>
       <div class="changelog-list" id="changelog-list"></div>
+    </section>
+  </div>
+
+  <!-- ======================= ABOUT PAGE ======================= -->
+  <div id="page-about" hidden>
+    <section class="about-page">
+      <div class="about-header">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>the project</span>
+        <h1>About GD Levels Archive</h1>
+        <p>What this site is, why it exists, and how it's maintained.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20L12 4L20 20L12 15L4 20Z"/></svg>
+          </div>
+          <h3>What this is</h3>
+          <p>GD Levels Archive is a fan-made, hand-curated collection of Geometry Dash level files (.gdr, .gdr2, .gmd). Every entry ships with its Level ID, creator, verifier, song, rating, and more — a proper reference, not just a download link.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Why it exists</h3>
+          <p>Level files disappear — accounts get deleted, links rot, showcases get taken down. This archive exists so a well-documented copy of these levels, with full context, keeps existing somewhere.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <h3>How it's maintained</h3>
+          <p>There's no public upload form or account system. Every level is added directly to the site's source by the maintainer after being reviewed, which keeps the archive spam-free and consistent.</p>
+        </div>
+      </div>
+
+      <div class="about-cta">
+        <h2>Want a level added?</h2>
+        <p>Send a submission with the level name, ID, creator, and file type — every request is reviewed by hand.</p>
+        <button class="btn btn-primary" id="request-showcase-about-btn">Submit a level</button>
+      </div>
     </section>
   </div>
 
@@ -134,14 +196,15 @@
   <div class="wrap footer-inner">
     <div class="brand">
       <div class="brand-mark" style="width:24px;height:24px;">
-        <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M4 20L12 4L20 20L12 15L4 20Z" fill="#fff"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M4 20L12 4L20 20L12 15L4 20Z" fill="#04070d"/></svg>
       </div>
-      Showcase Vault
+      GD Levels Archive
     </div>
     <p>Fan-made archive. Not affiliated with RobTop Games.</p>
     <div class="footer-links">
-      <button data-route="browse" class="footer-nav-btn">Browse</button>
+      <button data-route="browse" class="footer-nav-btn">Level Archive</button>
       <button data-route="changelog" class="footer-nav-btn">Changelog</button>
+      <button data-route="about" class="footer-nav-btn">About</button>
       <a href="#" id="mailto-footer">Contact</a>
     </div>
   </div>
