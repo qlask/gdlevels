@@ -12,21 +12,41 @@
    To add a new tab: add a row below. `route` becomes the URL hash
    (e.g. route:"about" -> "#about"). `page` must match the id of a
    <div id="page-...."> section in index.html (page:"about" ->
-   #page-about). `render` is the name of the render function to call
-   (must exist as an export somewhere and be wired in app.js — see
-   the comment above CATEGORIES for how to plug one in).
+   #page-about).
+
+   SHOWING LEVELS IN A TAB
+   Set `showsLevels: true` on a category to make it render the level
+   grid (filtered to that category) instead of a static page. Browse
+   ("Level Archive") always shows levels — it's the "everything" tab
+   and needs no `categories` field on a level to appear there.
+
+   Any OTHER category with `showsLevels: true` only shows levels whose
+   `categories` array (set per-level in config.js) includes that
+   category's `route`. A level can be listed in more than one category
+   at once — just add more than one route to its `categories` array.
+
+   Example: to make a "Demons" tab that only shows demon levels:
+     1. Add a row here:
+        { route:"demons", page:"demons", label:"Demons", order:2, showsLevels:true }
+     2. Add <div id="page-demons" hidden><section class="hero-lite">
+        ...<div class="grid" id="level-grid-demons"></div></section></div>
+        to index.html (a level-grid container is auto-created for you
+        if you skip this — see render-browse.js).
+     3. On each demon level in config.js, add: categories: ["demons"]
+        (or add "demons" alongside its other categories)
 
    Columns:
-   - route     hash fragment used in the URL, no "#", no spaces
-   - page      matches the id suffix of the page container in index.html
-   - label     text shown on the tab button
-   - order     lower numbers appear first (left to right)
+   - route        hash fragment used in the URL, no "#", no spaces
+   - page         matches the id suffix of the page container in index.html
+   - label        text shown on the tab button
+   - order        lower numbers appear first (left to right)
+   - showsLevels  true = this tab renders a (filtered) level grid
    ----------------------------------------------------------------------- */
 export const CATEGORIES = [
-  { route: "browse",    page: "browse",    label: "Level Archive", order: 2 },
-  { route: "changelog", page: "changelog", label: "Changelog",     order: 3 },
-  { route: "about",     page: "about",     label: "About",         order: 4 },
-   { route: "shitty-levels", page: "shitty-levels", label: "Shitty Levels", order: 1}
+  { route: "browse",    page: "browse",    label: "Level Archive", order: 1, showsLevels: true },
+  { route: "shitty-levels", page: "shitty-levels", label: "Shitty Levels", order: 1}
+  { route: "changelog", page: "changelog", label: "Changelog",     order: 3, showsLevels: false },
+  { route: "about",     page: "about",     label: "About",         order: 4, showsLevels: false }
 ];
 
 /* -----------------------------------------------------------------------
@@ -72,10 +92,23 @@ export function getCategories() {
   return CATEGORIES.slice().sort((a, b) => a.order - b.order);
 }
 
+export function getLevelCategories() {
+  return getCategories().filter(c => c.showsLevels);
+}
+
 export function getFieldType(key) {
   return FIELD_TYPES.find(f => f.key === key);
 }
 
 export function fieldsFor(section) {
   return FIELD_TYPES.filter(f => f.showOn.includes(section));
+}
+
+/* Does `level` belong to the given category route? "browse" (the first
+   level-showing category, i.e. the "everything" tab) always matches. */
+export function levelMatchesCategory(level, route) {
+  const levelCats = getLevelCategories();
+  if (!levelCats.length) return true;
+  if (route === levelCats[0].route) return true; // the "everything" tab
+  return Array.isArray(level.categories) && level.categories.includes(route);
 }
