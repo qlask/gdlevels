@@ -1,14 +1,17 @@
 import { MAILTO } from "./config.js";
-import { getCategories } from "./types.js";
+import { getCategories, getLevelCategories } from "./types.js";
 import { initRouter, currentRoute, goTo } from "./router.js";
-import { renderStats, initBrowsePage, initDownloadTracking } from "./render-browse.js";
+import { renderStats, initBrowsePage, initDownloadTracking, setActiveCategory } from "./render-browse.js";
 import { renderDetail } from "./render-detail.js";
 import { renderChangelog } from "./render-changelog.js";
 import { initCopyIdHandler } from "./ui.js";
 
 /* ---------------------------------------------------------------------
    TABS — built from the CATEGORIES table in types.js. Add a row there
-   and it shows up here automatically, no HTML edits needed.
+   and it shows up here automatically, no HTML edits needed. Every
+   category with showsLevels:true reuses the same level-grid page,
+   just filtered to that category (see levelMatchesCategory in types.js
+   and the per-level `categories` field in config.js).
    --------------------------------------------------------------------- */
 function buildNavTabs() {
   const nav = document.getElementById("nav-links");
@@ -25,13 +28,26 @@ function setActiveTab(routeName) {
   });
 }
 
+/* Every level-showing category (route) maps to the same physical
+   #page-browse element — only the grid contents change. Non-level
+   categories (changelog, about, ...) each get their own page. */
+function pageIdFor(routeName) {
+  const levelCat = getLevelCategories().find(c => c.route === routeName);
+  if (levelCat) return "page-browse";
+  const cat = getCategories().find(c => c.route === routeName);
+  return cat ? "page-" + cat.page : "page-browse";
+}
+
 function showPage(routeName) {
-  getCategories().forEach(cat => {
-    const el = document.getElementById("page-" + cat.page);
-    if (el) el.hidden = routeName !== cat.route;
+  const targetId = routeName === "detail" ? "page-detail" : pageIdFor(routeName);
+  const staticIds = getCategories()
+    .filter(c => !getLevelCategories().some(lc => lc.route === c.route))
+    .map(c => "page-" + c.page);
+  const allPageIds = new Set(["page-browse", "page-detail", ...staticIds]);
+  allPageIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = id !== targetId;
   });
-  const detailEl = document.getElementById("page-detail");
-  if (detailEl) detailEl.hidden = routeName !== "detail";
 }
 
 function renderRoute() {
@@ -40,13 +56,16 @@ function renderRoute() {
 
   if (route.name === "detail") {
     showPage("detail");
-    setActiveTab(getCategories()[0].route); // detail pages are conceptually part of the archive
+    setActiveTab(getLevelCategories()[0]?.route || "browse"); // detail pages are conceptually part of the archive
     renderDetail(route.slug);
     return;
   }
 
   showPage(route.name);
   setActiveTab(route.name);
+
+  const levelCat = getLevelCategories().find(c => c.route === route.name);
+  if (levelCat) setActiveCategory(route.name);
 }
 
 function initMailtoButtons() {
@@ -60,7 +79,7 @@ function initMailtoButtons() {
 }
 
 function initBrandHome() {
-  const homeRoute = getCategories()[0].route;
+  const homeRoute = getLevelCategories()[0]?.route || getCategories()[0].route;
   document.getElementById("brand-home-btn").addEventListener("click", () => goTo("#" + homeRoute, renderRoute));
   document.getElementById("hero-browse-link").addEventListener("click", e => {
     e.preventDefault();
