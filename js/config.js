@@ -30,6 +30,14 @@
    - description  Long-form write-up shown on the detail page.
    - tags         Array of short strings, e.g. ["Wave","Memory","Turtle"].
    - uploadDate   "YYYY-MM-DD" — shown on the detail page.
+   - categories   Array of category routes (from CATEGORIES in types.js)
+                  this level should ALSO appear under, besides the main
+                  "Level Archive" tab (it always shows there — no need
+                  to list it). Only routes with showsLevels:true in
+                  types.js do anything here. Example: categories:["demons"]
+                  puts this level in a "Demons" tab too, if one exists.
+                  Leave as [] (or omit) if the level should only live in
+                  the main Level Archive tab.
 
    Adding/editing/removing entries here is the only thing needed —
    the grid, search, filters, and detail pages update automatically.
@@ -54,6 +62,7 @@ export const LEVELS = [
     file: "https://drive.google.com/file/d/1k-vDNXN7Ucn-genQrRKJJdpqvKYHu3t6/view?usp=sharing",
     description: "A showcase of an Easy Demon collab from iLsane and arcania. Clean wave sections stitched into a fast, ship-heavy back half.",
     tags: ["Wave", "Ship", "Collab"],
+    categories: ["demons"],
     id: "56455318",
     uploadDate: "2026-07-24"
   },
@@ -76,6 +85,7 @@ export const LEVELS = [
     file: "https://drive.google.com/file/d/1f4c2cKLhPKoa-4yT_CFegqWATEh4ckxp/view?usp=sharing",
     description: "bro i used this song",
     tags: ["Cube", "Timing"],
+    categories: ["demons"],
     id: "126502545",
     uploadDate: "2026-07-25"
   },
@@ -98,6 +108,7 @@ export const LEVELS = [
     file: "https://drive.google.com/file/d/1OYA1mvqoA9gw4Z5IQtWDuR1f0z7R2HtY/view?usp=drive_link",
     description: "An Easy Demon by yyene.",
     tags: ["Ship", "Dark"],
+    categories: ["demons"],
     id: "145216304",
     uploadDate: "2026-07-26"
   },
