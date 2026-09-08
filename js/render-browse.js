@@ -3,6 +3,7 @@ import { icons } from "./icons.js";
 import { countFor, totalDownloads, trackDownload } from "./storage.js";
 import { showToast } from "./ui.js";
 import { goTo } from "./router.js";
+import { getLevelCategories, levelMatchesCategory } from "./types.js";
 
 const grid = document.getElementById("level-grid");
 const searchInput = document.getElementById("search-input");
@@ -10,11 +11,25 @@ const chipRow = document.getElementById("chip-row");
 const diffSelect = document.getElementById("diff-select");
 const sortSelect = document.getElementById("sort-select");
 const totalDownloadsEl = document.getElementById("total-downloads");
+const sectionTitleEl = document.getElementById("browse-section-title");
 
 let activeFilter = "all";
 let activeDiff = "all";
 let activeSort = "newest";
 let query = "";
+let activeCategory = getLevelCategories()[0]?.route || "browse";
+
+/* Called by app.js whenever the active tab changes, so the grid always
+   reflects levels belonging to that category (see types.js CATEGORIES /
+   the per-level `categories` field in config.js). */
+export function setActiveCategory(route) {
+  activeCategory = route;
+  const cat = getLevelCategories().find(c => c.route === route);
+  if (sectionTitleEl) {
+    sectionTitleEl.textContent = cat ? cat.label : "Level Archive";
+  }
+  applyFilters();
+}
 
 /* ---------------------------------------------------------------------
    STATS (static counts, computed once)
@@ -89,8 +104,8 @@ export function renderGrid(list) {
     grid.innerHTML = `
       <div class="empty-state">
         <div class="block-mark"></div>
-        <p class="title">No levels match that search</p>
-        <p class="hint">Try a different name, ID, or difficulty filter.</p>
+        <p class="title">No levels match here</p>
+        <p class="hint">Try a different name, ID, difficulty, or tab.</p>
       </div>`;
     return;
   }
@@ -99,11 +114,12 @@ export function renderGrid(list) {
 
 function applyFilters() {
   let filtered = LEVELS.filter(lv => {
+    const matchesCategory = levelMatchesCategory(lv, activeCategory);
     const matchesType = activeFilter === "all" || lv.type === activeFilter;
     const matchesDiff = activeDiff === "all" || lv.diff === activeDiff;
     const haystack = (lv.name + " " + lv.creator + " " + lv.id).toLowerCase();
     const matchesQuery = haystack.includes(query.toLowerCase());
-    return matchesType && matchesDiff && matchesQuery;
+    return matchesCategory && matchesType && matchesDiff && matchesQuery;
   });
 
   filtered = filtered.slice().sort((a, b) => {
