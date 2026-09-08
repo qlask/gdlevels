@@ -23,9 +23,10 @@
    - order     lower numbers appear first (left to right)
    ----------------------------------------------------------------------- */
 export const CATEGORIES = [
-  { route: "browse",    page: "browse",    label: "Level Archive", order: 1 },
-  { route: "changelog", page: "changelog", label: "Changelog",     order: 2 },
-  { route: "about",     page: "about",     label: "About",         order: 3 }
+  { route: "browse",    page: "browse",    label: "Level Archive", order: 2 },
+  { route: "changelog", page: "changelog", label: "Changelog",     order: 3 },
+  { route: "about",     page: "about",     label: "About",         order: 4 },
+   { route: "shitty-levels", page: "shitty-levels", label: "Shitty Levels", order: 1}
 ];
 
 /* -----------------------------------------------------------------------
