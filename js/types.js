@@ -44,7 +44,7 @@
    ----------------------------------------------------------------------- */
 export const CATEGORIES = [
   { route: "browse",    page: "browse",    label: "Level Archive", order: 1, showsLevels: true },
-  { route: "shitty-levels", page: "shitty-levels", label: "Shitty Levels", order: 1}
+  { route: "shitty-levels", page: "shitty-levels", label: "Shitty Levels", order: 1},
   { route: "changelog", page: "changelog", label: "Changelog",     order: 3, showsLevels: false },
   { route: "about",     page: "about",     label: "About",         order: 4, showsLevels: false }
 ];
