@@ -1,64 +1,80 @@
 /* =====================================================================
-   DESIGN TOKENS
-   Palette: deep graphite canvas, single violet signal color, and a
-   small desaturated "demon-red" reserved strictly for difficulty data
-   (mirrors Geometry Dash's own convention of drawing demons in red —
-   it encodes real information, it isn't decoration).
+   DESIGN TOKENS — "GD Levels Archive"
+   Palette: near-black canvas with a dual neon signal (cyan → magenta),
+   echoing Geometry Dash's editor glow and icon-kit gradients. Difficulty
+   colors follow the game's own convention (blue easy → orange insane →
+   red demon) so they carry real information, not just decoration.
    ===================================================================== */
 :root{
   /* surfaces */
-  --void:#0b0c10;
-  --canvas:#101218;
-  --panel:#15171f;
-  --panel-raised:#1b1e27;
-  --panel-hair:#20232d;
+  --void:#07080d;
+  --canvas:#0c0e15;
+  --panel:#12141d;
+  --panel-raised:#181b26;
+  --panel-hair:#1d2130;
 
   /* lines */
   --line:rgba(255,255,255,0.08);
-  --line-strong:rgba(255,255,255,0.14);
+  --line-strong:rgba(255,255,255,0.16);
   --line-hero:rgba(255,255,255,0.06);
 
   /* ink */
-  --ink:#f2f3f6;
-  --ink-soft:#9297a3;
-  --ink-faint:#5d6169;
+  --ink:#f3f5fa;
+  --ink-soft:#98a0b3;
+  --ink-faint:#5a6178;
 
-  /* signal (single accent) */
-  --signal:#7c6cff;
-  --signal-ink:#0b0c10;
-  --signal-soft:rgba(124,108,255,0.14);
-  --signal-line:rgba(124,108,255,0.4);
-  --signal-glow:rgba(124,108,255,0.28);
+  /* signal — dual neon gradient (cyan -> magenta), GD editor inspired */
+  --signal:#39e0ff;
+  --signal-2:#ff3ec8;
+  --signal-grad:linear-gradient(120deg, var(--signal), var(--signal-2));
+  --signal-ink:#04070d;
+  --signal-soft:rgba(57,224,255,0.13);
+  --signal-line:rgba(57,224,255,0.4);
+  --signal-glow:rgba(57,224,255,0.35);
+  --signal-2-soft:rgba(255,62,200,0.13);
+  --signal-2-glow:rgba(255,62,200,0.32);
 
   /* secondary functional (mint) — used only for confirmations */
   --ok:#3ddc97;
   --ok-soft:rgba(61,220,151,0.14);
 
-  /* difficulty data-color — reserved, not a page accent */
-  --demon:#e0555f;
-  --demon-soft:rgba(224,85,95,0.16);
+  /* difficulty data-colors — GD's own face-color language */
+  --diff-easy:#6fd0ff;
+  --diff-normal:#4fdc7a;
+  --diff-hard:#ffcf4a;
+  --diff-harder:#ff9a3d;
+  --diff-insane:#ff5a5a;
+  --demon:#ff2e63;
+  --demon-soft:rgba(255,46,99,0.16);
+
+  /* rating data-colors */
+  --rate-star:#ffd23d;
+  --rate-feature:#39e0ff;
+  --rate-epic:#c76bff;
+  --rate-legendary:#ff8a3d;
+  --rate-mythic:#ff3ec8;
 
   /* format data-colors — muted, reserved for badges only */
-  --fmt-gdr:#7c6cff;
-  --fmt-gdr2:#3ddc97;
-  --fmt-gmd:#e0a53d;
+  --fmt-gdr:#39e0ff;
+  --fmt-gdr2:#c76bff;
+  --fmt-gmd:#ffcf4a;
 
   /* changelog tag colors */
-  --tag-added:#7c6cff;
-  --tag-fixed:#e0a53d;
-  --tag-changed:#5a8fd6;
+  --tag-added:#39e0ff;
+  --tag-fixed:#ffcf4a;
+  --tag-changed:#c76bff;
 
   /* radii — moderate, engineered, not full pill / not zero */
   --r-xs:6px;
   --r-sm:10px;
   --r-md:14px;
-  --r-lg:20px;
+  --r-lg:22px;
   --r-full:100px;
 
   /* shadow */
-  --shadow-sm:0 1px 2px rgba(0,0,0,0.3);
-  --shadow-md:0 10px 30px rgba(0,0,0,0.35);
-  --shadow-lg:0 24px 70px rgba(0,0,0,0.5);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.35);
+  --shadow-md:0 10px 30px rgba(0,0,0,0.4);
+  --shadow-lg:0 24px 70px rgba(0,0,0,0.55);
   --shadow-glow:0 0 0 1px var(--signal-line), 0 12px 40px var(--signal-glow);
 
   /* type */

@@ -6,10 +6,15 @@ html{ scroll-behavior:smooth; }
 body{
   margin:0;
   background:var(--void);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 12% -10%, rgba(57,224,255,0.07), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 90% 10%, rgba(255,62,200,0.06), transparent 60%);
+  background-attachment:fixed;
   color:var(--ink);
   font-family:var(--font-body);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
+  position:relative;
 }
 h1,h2,h3,.display{
   font-family:var(--font-display);
@@ -19,41 +24,61 @@ h1,h2,h3,.display{
 p{ margin:0; }
 a{ color:inherit; }
 img{ max-width:100%; display:block; }
-button, input{ font:inherit; color:inherit; }
+button, input, select{ font:inherit; color:inherit; }
 button{ background:none; }
-::selection{ background:var(--signal); color:#fff; }
+::selection{ background:var(--signal); color:#04070d; }
 :focus-visible{ outline:2px solid var(--signal); outline-offset:2px; border-radius:4px; }
 
 .mono{ font-family:var(--font-mono); letter-spacing:-0.01em; }
 [hidden]{ display:none !important; }
 
-.wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+.wrap{ max-width:1220px; margin:0 auto; padding:0 24px; }
 
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
 }
 
+/* faint scanline overlay — subtle CRT/editor feel across the whole page */
+.scanline-fx{
+  position:fixed; inset:0; z-index:1000; pointer-events:none;
+  background-image:repeating-linear-gradient(
+    to bottom, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px,
+    transparent 1px, transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+
 /* faint dot-grid texture — the site's recurring "editor grid" motif */
 .grid-texture{
-  background-image:radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
+  background-image:radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
   background-size:26px 26px;
 }
 
 /* shared eyebrow label */
 .eyebrow{
   display:inline-flex; align-items:center; gap:8px;
-  background:var(--signal-soft); color:var(--signal);
+  background:linear-gradient(90deg, var(--signal-soft), var(--signal-2-soft));
+  color:var(--signal);
   padding:6px 13px; border-radius:var(--r-full);
   font-size:12.5px; font-weight:600;
   font-family:var(--font-mono); letter-spacing:0.02em;
   border:1px solid var(--signal-line);
 }
-.eyebrow-dot{ width:6px; height:6px; border-radius:50%; background:var(--signal); flex-shrink:0; }
+.eyebrow-dot{
+  width:6px; height:6px; border-radius:50%; background:var(--signal-grad); flex-shrink:0;
+  box-shadow:0 0 8px var(--signal-glow);
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+@keyframes pulseDot{
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:0.55; transform:scale(0.8); }
+}
 
 /* shared diamond mark — the site's signature glyph, a rotated block
    echoing Geometry Dash's editor cubes, reused in the logo, section
    markers and empty states */
 .block-mark{
-  width:9px; height:9px; background:var(--signal);
+  width:9px; height:9px; background:var(--signal-grad);
   border-radius:2px; transform:rotate(45deg); flex-shrink:0;
+  box-shadow:0 0 10px var(--signal-glow);
 }
